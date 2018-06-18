@@ -8,6 +8,8 @@ package controller
 import (
 	"net/http"
 	"github.com/julienschmidt/httprouter"
+	"fmt"
+	//"io/ioutil"
 )
 
 // 返回首页
@@ -18,7 +20,21 @@ func Index (w http.ResponseWriter,
 
 func Register (w http.ResponseWriter,
 	r *http.Request, p httprouter.Params){
+	// 方法一:
+    // r.ParseForm()
+	// str := r.PostForm.Get("name")
+	defer r.Body.Close()
+	w.WriteHeader(http.StatusOK)
 
+	// 方法二: str := r.PostFormValue("name")
+
+	/* 方法三:
+	ctx,err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println("post error !")
+	} */
+
+	//fmt.Fprintf(w, "request body is %s", str)
 }
 
 func SignIn (w http.ResponseWriter,
@@ -43,12 +59,15 @@ func removeComment (w http.ResponseWriter,
 
 func viewArticle (w http.ResponseWriter,
 	r *http.Request, p httprouter.Params){
-
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "article ID is %s", p.ByName("ID"))
 }
 
 func createArticle (w http.ResponseWriter,
 	r *http.Request, p httprouter.Params){
 
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "article ID is %s", p.ByName("ID"))
 }
 
 func editArticle (w http.ResponseWriter,
